@@ -1,10 +1,18 @@
- // Create with rxreducer snippet
-const initialState = {}
+import { FETCHED_MOVIES, FETCHED_MOVIES_ERROR } from '../actions/movieActions'
+// Create with rxreducer snippet
+const initialState = {
+  fecthing: false,
+  fetched: false,
+  movies:[],
+  error:{}
+}
 
-export default (state = ["Movie 1","Movie 2","Movie 3"], { type, payload }) => {
+export default (state = initialState, { type, payload }) => {
   switch (type) {
-/*case typeName:
-    return { ...state, ...payload } */
+case FETCHED_MOVIES:
+    return { ...state, movies:payload }; 
+case FETCHED_MOVIES_ERROR:
+    return { ...state, error:payload }; 
   default:
     return state
   }
