@@ -13,8 +13,6 @@ class App extends Component {
       <div>
         <Header/>
         <Container text>
-          App Component
-          <br />
           <Route path="/movies" component={MoviesPage}></Route>
         </Container>
         <Footer />
