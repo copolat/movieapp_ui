@@ -1,8 +1,8 @@
 import {
-  FETCHED_MOVIES_PENDING,
-  FETCHED_MOVIES_FULFILLED,
-  FETCHED_MOVIES_REJECTED /*FETCHED_MOVIES_ERROR*/,
-} from "../actions/movieActions";
+  NEW_MOVIES_PENDING,
+  NEW_MOVIES_FULFILLED,
+  NEW_MOVIES_REJECTED
+} from "../actions/newMovieActions";
 // Create with rxreducer snippet
 const initialState = {
   fecthing: false,
@@ -13,14 +13,12 @@ const initialState = {
 
 export default (state = initialState, { type, payload }) => {
   switch (type) {
-    case FETCHED_MOVIES_PENDING:
+    case NEW_MOVIES_PENDING:
       return { ...state, fecthing: true, fetched: false };
-    case FETCHED_MOVIES_FULFILLED:
+    case NEW_MOVIES_FULFILLED:
       return { ...state, fecthing: false, fetched: true, movies: payload };
-    case FETCHED_MOVIES_REJECTED:
+    case NEW_MOVIES_REJECTED:
       return { ...state, fecthing: false, fetched: true, error: payload };
-    /*case FETCHED_MOVIES_ERROR:
-    return { ...state, error:payload }; */
     default:
       return state;
   }

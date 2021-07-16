@@ -27,8 +27,8 @@ export default class Header extends Component {
               <Menu.Item as={Link} to="/">
                 <Image size="mini" src="https://react.semantic-ui.com/logo.png"/></Menu.Item>
               <Menu.Item as={NavLink} to="/"  exact header>Movie App</Menu.Item>
-              <Menu.Item as={NavLink} to="movies" exact >Movies</Menu.Item>
-              <Menu.Item as={NavLink} to="movies/new" exact >Add New</Menu.Item>
+              <Menu.Item as={NavLink} to="/movies" exact >Movies</Menu.Item>
+              <Menu.Item as={NavLink} to="/movies/new" exact >Add New</Menu.Item>
             </Container>
           </Menu>
         </Visibility>
