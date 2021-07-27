@@ -4,17 +4,19 @@ import { connect } from "react-redux";
 import moviesReducer from "../../reducers/moviesReducer";
 import PropTypes from "prop-types";
 import MovieList from "../MovieList";
-import { fetchMovies } from "../../actions/movieActions";
+import { fetchMovies, onDeleteMovieSubmit } from "../../actions/movieActions";
 import {ScaleLoader} from "react-spinners";
 export class MoviesPage extends Component {
   static propTypes = { moviesReducer: PropTypes.object.isRequired };
   // cdm snippet
   componentDidMount() {
+    const {willUpdateMovie, match} = this.props
+    //console.log("MoviesPage props=>", this.props)
     this.props.fetchMovies();
   }
 
   render() {
-    console.log(this.props);
+    //console.log(this.props);
     const errMessage = this.props.moviesReducer.error.message;
     return (
       <div>
@@ -23,7 +25,7 @@ export class MoviesPage extends Component {
         {errMessage ? (
           <h3>Error in retrieving data. Details: {errMessage}</h3>
         ) : (
-          <MovieList movies={this.props.moviesReducer.movies} />
+          <MovieList movies={this.props.moviesReducer.movies} deleteMovie={ this.props.onDeleteMovieSubmit } />
         )}
         <hr />
       </div>
@@ -34,6 +36,6 @@ export class MoviesPage extends Component {
 //const mapStateToProps = (state) => ({movies:state.moviesReducer})
 const mapStateToProps = ({ moviesReducer }) => ({ moviesReducer });
 
-const mapDispatchToProps = { fetchMovies };
+const mapDispatchToProps = { fetchMovies, onDeleteMovieSubmit };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MoviesPage);

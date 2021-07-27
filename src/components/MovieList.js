@@ -3,7 +3,8 @@ import React from "react";
 import MovieCard from "./MovieCard";
 import { Grid } from "semantic-ui-react";
 
-function MovieList({ movies }) {
+function MovieList({ movies, deleteMovie }) {
+  console.log(deleteMovie)
   //console.log("Here=> ", movies);
   /*  const movieList = movies.map((movie) => {
     //return <h3 key={movie.id}>{movie.title}</h3>;
@@ -15,7 +16,7 @@ function MovieList({ movies }) {
       <Grid.Row columns={3}>
         {movies.map((movie) => (
           <Grid.Column key={movie.id}>
-            <MovieCard movie={movie} />
+            <MovieCard movie={movie} deleteMovie={deleteMovie} />
           </Grid.Column>
         ))}
       </Grid.Row>

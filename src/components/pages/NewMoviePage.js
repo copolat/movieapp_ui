@@ -3,15 +3,37 @@ import React, { Component } from "react";
 import { Button, Form, Image, Message } from "semantic-ui-react";
 import InlineError from "../InlineError";
 import { connect } from "react-redux";
-import { onNewMovieSubmit } from "../../actions/newMovieActions";
+import { onNewMovieSubmit, fetchMovie, onUpdateMovieSubmit } from "../../actions/newMovieActions";
 import { Redirect } from 'react-router-dom'
+import { newMovieReducer } from '../../reducers/newMovieReducer'
 
 class NewMoviePage extends Component {
   state = {
-    title: "",
-    cover: "",
+    title: this.props.willUpdateMovie ? this.props.willUpdateMovie.title: "",
+    cover: this.props.willUpdateMovie ? this.props.willUpdateMovie.cover: "",
     errors: {},
   };
+componentDidMount() {
+  const {willUpdateMovie, match} = this.props
+  //console.log("MoviesPage props=>", this.props)
+  if(!willUpdateMovie && match.params.id){
+    this.props.fetchMovie(match.params.id);
+  }
+}
+
+// Snippet => cwr
+componentWillReceiveProps(nextProps) {
+  const {newMovieReducer} =nextProps;
+  //console.log(nextProps)
+  if(newMovieReducer.movies.data) {
+    this.setState({
+      title: newMovieReducer.movies.data.title,
+      cover: newMovieReducer.movies.data.cover,
+    })
+  }
+}
+
+  
   handleChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value,
@@ -25,7 +47,12 @@ class NewMoviePage extends Component {
     this.setState({ errors });
     // console.log(errors);
     if (Object.keys(errors).length === 0) {
-      this.props.onNewMovieSubmit(this.state);
+      const id= this.props.match.params.id;
+      if (!id) {
+        this.props.onNewMovieSubmit(this.state);
+      } else {
+        this.props.onUpdateMovieSubmit({...this.state, id})
+      }
       this.setState({redirect:true})
     }
   };
@@ -37,6 +64,7 @@ class NewMoviePage extends Component {
     return errMessage;
   };
   render() {
+    console.log("NewMoviePage=>",this.props)
     const { errors } = this.state;
     const errorField = ( <Message negative>
       <Message.Header>
@@ -83,7 +111,7 @@ class NewMoviePage extends Component {
     </Form>
     )
     //console.log(this.props)
-    console.log(this.props.newMovieReducer.error.response)
+    //console.log(this.props.newMovieReducer.error.response)
     return (
       <div>
         <h2>New Movie Form</h2>
@@ -93,11 +121,15 @@ class NewMoviePage extends Component {
   }
 }
 
-const mapStateToProps = ({ newMovieReducer }) => {
+const mapStateToProps = ({ newMovieReducer, moviesReducer }, props) => {
   //console.log("newMovieReducer=> ", newMovieReducer)
-  return { newMovieReducer };
+  //console.log("moviesReducer=> ", moviesReducer)
+  //console.log("NewMoviePage props =>", props)
+  return { newMovieReducer,
+    willUpdateMovie:moviesReducer.movies.find(item => item.id === props.match.params.id)
+  };
 };
 const mapDispatchToProps = {
-  onNewMovieSubmit,
+  onNewMovieSubmit, fetchMovie, onUpdateMovieSubmit
 };
 export default connect(mapStateToProps, mapDispatchToProps)(NewMoviePage);
